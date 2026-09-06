@@ -49,6 +49,8 @@ LUT, and history per cluster and updates the manifest LUT paths.
 
 ## Evaluate
 
+With `--scene-manifest`, the benchmark-compatible normalized DKL distance threshold defaults to `1.8`. Images above it use the base `--model` or `--lut` and report `cluster_id=-1`; set `--match-distance-threshold 0` to disable switching.
+
 ```text
 python eval.py --data-dir datasets/test --model outputs/base_checkpoint.pt --output-dir results
 python eval.py --data-dir datasets/test --lut outputs/base_lut.pt --output-dir results
@@ -56,7 +58,8 @@ python eval.py --data-dir datasets/test --lut outputs/base_lut.pt --scene-manife
 ```
 
 Evaluation writes optimized images, `metrics.csv`, and `metrics.json`. Metrics
-are ML-PEA-like power saving, PSNR, SSIM, and MetaM.
+are ML-PEA-like power saving, PSNR, SSIM, and MetaM. Evaluation automatically
+uses CUDA when available; pass `--device cpu` to override it.
 
 ## Plot training
 

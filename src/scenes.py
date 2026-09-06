@@ -55,6 +55,8 @@ def load_scene_manifest(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def match_scene(image, manifest):
+def match_scene(image, manifest, return_distance=False):
     feature = (extract_dkl_feature(image) - np.asarray(manifest["mean"])) / np.asarray(manifest["std"])
-    return int(np.linalg.norm(np.asarray(manifest["centers"]) - feature, axis=1).argmin())
+    distances = np.linalg.norm(np.asarray(manifest["centers"]) - feature, axis=1)
+    cluster_id = int(distances.argmin())
+    return (cluster_id, float(distances[cluster_id])) if return_distance else cluster_id

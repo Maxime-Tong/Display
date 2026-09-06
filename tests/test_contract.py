@@ -41,6 +41,11 @@ class ContractTest(unittest.TestCase):
         self.assertEqual(centers.shape, (2, 9))
         self.assertTrue(np.isfinite(mean).all() and np.isfinite(std).all())
 
+        manifest = {"centers": centers.tolist(), "mean": mean.tolist(), "std": std.tolist()}
+        cluster_id, distance = scenes.match_scene(images[0], manifest, return_distance=True)
+        self.assertEqual(cluster_id, scenes.match_scene(images[0], manifest))
+        self.assertGreaterEqual(distance, 0.0)
+
     def test_reporting_power_is_weighted_but_loss_is_not(self):
         red = torch.zeros(4, 4, 3); red[..., 0] = 0.5
         blue = torch.zeros(4, 4, 3); blue[..., 2] = 0.5
