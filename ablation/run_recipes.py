@@ -5,10 +5,12 @@ import json
 import sys
 from pathlib import Path
 
+import torch
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.model import ColorModel, save_model
+from src.model import ColorModel, generate_lut, save_model
 from src.pipeline import cluster, finetune, pretrain, validate_config
 
 
@@ -35,7 +37,9 @@ def train(data_dir, output, recipe, clusters, pretrain_config, finetune_config, 
     cluster(data_dir, manifest, fine)
     if recipe == "finetune":
         base = output / "base_checkpoint.pt"
-        save_model(ColorModel(fine["hidden_dim"], fine["depth"]), base)
+        base_model = ColorModel(fine["hidden_dim"], fine["depth"])
+        save_model(base_model, base)
+        torch.save({"lut": generate_lut(base_model, fine["lut_resolution"], fine["device"])}, output / "base_lut.pt")
     finetune(data_dir, output, output / "base_checkpoint.pt", manifest, fine)
 
 
