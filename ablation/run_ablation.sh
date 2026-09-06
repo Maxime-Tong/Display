@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DATA="" OUT="" MODEL="" MAX=0 DEVICE="" RECIPES="" RUNTIME=0 BLOCKS="" LUTRES=0 CLUSTERS="1,2,4,8" RESOLUTIONS="8,16,32"
+DATA="" OUT="" MODEL="" MAX=100 DEVICE="" RECIPES="" RUNTIME=0 BLOCKS="" LUTRES=0 CLUSTERS="1,2,4,8" RESOLUTIONS="8,16,32"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -d|--data-dir) DATA="$2"; shift 2;; -o|--out) OUT="$2"; shift 2;; -m|--model-dir) MODEL="$2"; shift 2;;
@@ -17,7 +17,7 @@ IFS=',' read -ra KS <<< "$CLUSTERS"
 if [[ -n "$RECIPES" ]]; then
   IFS=',' read -ra RS <<< "$RECIPES"
   for recipe in "${RS[@]}"; do
-    dir="$OUT/recipes/$recipe"; python run_recipes.py --data-dir "$DATA" --output-dir "$dir" --recipe "$recipe" --clusters "${KS[${#KS[@]}-1]}"
+    dir="$OUT/recipes/$recipe"; python run_recipes.py --data-dir "$DATA" --output-dir "$dir" --recipe "$recipe" --clusters "${KS[${#KS[@]}-1]}" --max-images "$MAX"
     mode=cluster; [[ "$recipe" == pretrain ]] && mode=single
     python run_eval.py --model-dir "$dir" --data-dir "$DATA" --out "$OUT/eval/recipe/$recipe.json" --mode "$mode" --max-images "$MAX" "${DEV[@]}"
   done
@@ -39,7 +39,7 @@ fi
 
 if [[ "$LUTRES" == 1 ]]; then
   IFS=',' read -ra LS <<< "$RESOLUTIONS"; for k in "${KS[@]}"; do
-    dir="$OUT/lutres/k$k"; python run_recipes.py --data-dir "$DATA" --output-dir "$dir" --recipe pretrain_finetune --clusters "$k"
+    dir="$OUT/lutres/k$k"; python run_recipes.py --data-dir "$DATA" --output-dir "$dir" --recipe pretrain_finetune --clusters "$k" --max-images "$MAX"
     for res in "${LS[@]}"; do python run_eval.py --model-dir "$dir" --data-dir "$DATA" --out "$OUT/eval/lutres/k${k}_r${res}.json" --lut-resolution "$res" --max-images "$MAX" "${DEV[@]}"; done
   done
 fi

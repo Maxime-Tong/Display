@@ -34,7 +34,7 @@ def main():
     parser.add_argument("--repr", choices=("lut", "net"), default="lut")
     parser.add_argument("--block-size", type=int, default=4)
     parser.add_argument("--lut-resolution", type=int)
-    parser.add_argument("--max-images", type=int, default=0)
+    parser.add_argument("--max-images", type=int, default=100)
     parser.add_argument("--match-distance-threshold", type=float, default=1.8)
     parser.add_argument("--device")
     args = parser.parse_args()

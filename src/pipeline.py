@@ -125,9 +125,11 @@ def train_model(paths, config, initial_model=None, history_path=None):
     return model.eval()
 
 
-def pretrain(data_dir, output_dir, config):
+def pretrain(data_dir, output_dir, config, max_images=0):
     validate_config(config)
     paths = sample_images_per_scene(data_dir, config["pretrain_samples_per_scene"], config.get("seed", 0))
+    if max_images:
+        paths = paths[:max_images]
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     model = train_model(paths, config, history_path=output / "training_history.csv")
@@ -135,9 +137,9 @@ def pretrain(data_dir, output_dir, config):
     torch.save({"lut": generate_lut(model, config.get("lut_resolution", 16), config.get("device", "cpu"))}, output / "base_lut.pt")
 
 
-def cluster(data_dir, manifest_path, config):
+def cluster(data_dir, manifest_path, config, max_images=0):
     validate_config(config)
-    paths = image_paths(data_dir)
+    paths = image_paths(data_dir)[:max_images] if max_images else image_paths(data_dir)
     if not paths:
         raise ValueError("clustering dataset contains no images")
     features = np.stack([extract_dkl_feature(load_image(path, config["image_size"])) for path in paths])
@@ -147,13 +149,14 @@ def cluster(data_dir, manifest_path, config):
     print(f"saved {len(centers)} DKL clusters to {manifest_path}")
 
 
-def finetune(data_dir, output_dir, base_checkpoint, manifest_path, config):
+def finetune(data_dir, output_dir, base_checkpoint, manifest_path, config, max_images=0):
     validate_config(config)
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     manifest = load_scene_manifest(manifest_path)
     groups = [[] for _ in manifest["centers"]]
-    for path in image_paths(data_dir):
+    paths = image_paths(data_dir)[:max_images] if max_images else image_paths(data_dir)
+    for path in paths:
         groups[match_scene(load_image(path, config["image_size"]), manifest)].append(path)
     if len(groups) != config["clusters"]:
         raise ValueError("config clusters does not match the scene manifest")
