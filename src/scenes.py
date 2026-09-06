@@ -15,7 +15,7 @@ IMAGE_EXTENSIONS = {".bmp", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
 def load_image(path, size=128):
     image = Image.open(path).convert("RGB")
     if size:
-        image.thumbnail((size, size))
+        image = image.resize((size, size), Image.Resampling.BILINEAR)
     return np.asarray(image, dtype=np.float32) / 255.0
 
 

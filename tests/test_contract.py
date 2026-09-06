@@ -5,6 +5,7 @@ import tempfile
 
 import numpy as np
 import torch
+from PIL import Image
 
 from src import color, losses, model, power, scenes
 from src.pipeline import sample_images_per_scene, validate_config
@@ -72,6 +73,15 @@ class ContractTest(unittest.TestCase):
             self.assertEqual(first, second)
             self.assertEqual(len(first), 4)
             self.assertEqual({path.parent.name for path in first}, {"a", "b"})
+
+    def test_training_images_have_fixed_shape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths = []
+            for name, shape in (("wide.png", (320, 180)), ("square.png", (200, 200))):
+                path = Path(directory) / name
+                Image.new("RGB", shape).save(path)
+                paths.append(path)
+            self.assertEqual([scenes.load_image(path, 64).shape for path in paths], [(64, 64, 3), (64, 64, 3)])
 
 
 if __name__ == "__main__":
