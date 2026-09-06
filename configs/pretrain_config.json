@@ -9,6 +9,7 @@
   "depth": 2,
   "lut_resolution": 16,
   "log_interval": 10,
+  "seed": 0,
   "pretrain_samples_per_scene": 1000,
   "loss": {
     "power_weights": [0.22970384, 0.24373232, 0.5265638],

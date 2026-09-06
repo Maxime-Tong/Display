@@ -19,13 +19,33 @@ src/pipeline.py    training
 eval.py            dataset evaluation
 ```
 
-## Train
+## Pretrain, cluster, and fine-tune
 
-```text
-python -m src.pipeline --data-dir datasets/train --config configs/train.json --output-dir outputs
+Run these commands from the project root, replacing `datasets/train` with the
+dataset directory whose immediate subdirectories are scenes:
+
+```powershell
+python -m src.pipeline pretrain `
+  --data-dir datasets/train `
+  --config configs/pretrain_config.json `
+  --output-dir outputs
+
+python -m src.pipeline cluster `
+  --data-dir datasets/train `
+  --config configs/finetune_config.json `
+  --manifest outputs/scene_manifest.json
+
+python -m src.pipeline finetune `
+  --data-dir datasets/train `
+  --config configs/finetune_config.json `
+  --base-checkpoint outputs/base_checkpoint.pt `
+  --manifest outputs/scene_manifest.json `
+  --output-dir outputs
 ```
 
-Use `configs/cluster.json` to train four DKL-cluster LUTs after the base model.
+Pretraining writes the base checkpoint, base LUT, and training history.
+Clustering writes the DKL scene manifest. Fine-tuning writes one checkpoint,
+LUT, and history per cluster and updates the manifest LUT paths.
 
 ## Evaluate
 

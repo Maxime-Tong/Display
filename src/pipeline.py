@@ -12,7 +12,7 @@ import torch
 from .losses import CombinedLoss, LossConfig
 from .model import ColorModel, generate_lut, load_model, save_model
 from .power import power_saving
-from .scenes import IMAGE_EXTENSIONS, cluster_dkl_scenes, extract_dkl_feature, load_image, save_scene_manifest
+from .scenes import IMAGE_EXTENSIONS, cluster_dkl_scenes, extract_dkl_feature, load_image, load_scene_manifest, match_scene, save_scene_manifest
 
 
 def image_paths(data_dir):
@@ -127,37 +127,79 @@ def train_model(paths, config, initial_model=None, history_path=None):
     return model.eval()
 
 
-def train(data_dir, output_dir, config):
+def pretrain(data_dir, output_dir, config):
     validate_config(config)
-    paths = (sample_images_per_scene(data_dir, config["pretrain_samples_per_scene"], config.get("seed", 0))
-             if "pretrain_samples_per_scene" in config else image_paths(data_dir))
+    paths = sample_images_per_scene(data_dir, config["pretrain_samples_per_scene"], config.get("seed", 0))
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     model = train_model(paths, config, history_path=output / "training_history.csv")
     save_model(model, output / "base_checkpoint.pt")
     torch.save({"lut": generate_lut(model, config.get("lut_resolution", 16), config.get("device", "cpu"))}, output / "base_lut.pt")
-    clusters = config.get("clusters", 0)
-    if clusters:
-        features = np.stack([extract_dkl_feature(load_image(path)) for path in paths])
-        labels, centers, mean, std = cluster_dkl_scenes(features, clusters, config.get("seed", 0))
-        lut_paths = []
-        for cluster in range(clusters):
-            cluster_model = train_model([p for p, label in zip(paths, labels) if label == cluster], config, load_model(output / "base_checkpoint.pt"), output / f"cluster_{cluster}_training_history.csv")
-            lut_path = output / f"cluster_{cluster}_lut.pt"
-            torch.save({"lut": generate_lut(cluster_model, config.get("lut_resolution", 16), config.get("device", "cpu"))}, lut_path)
-            lut_paths.append(lut_path.name)
-        save_scene_manifest(output / "scene_manifest.json", centers, mean, std, lut_paths)
+
+
+def cluster(data_dir, manifest_path, config):
+    validate_config(config)
+    paths = image_paths(data_dir)
+    if not paths:
+        raise ValueError("clustering dataset contains no images")
+    features = np.stack([extract_dkl_feature(load_image(path, config["image_size"])) for path in paths])
+    _, centers, mean, std = cluster_dkl_scenes(features, config["clusters"], config.get("seed", 0))
+    lut_paths = [f"cluster_{index}_lut.pt" for index in range(config["clusters"])]
+    save_scene_manifest(manifest_path, centers, mean, std, lut_paths)
+    print(f"saved {len(centers)} DKL clusters to {manifest_path}")
+
+
+def finetune(data_dir, output_dir, base_checkpoint, manifest_path, config):
+    validate_config(config)
+    output = Path(output_dir)
+    output.mkdir(parents=True, exist_ok=True)
+    manifest = load_scene_manifest(manifest_path)
+    groups = [[] for _ in manifest["centers"]]
+    for path in image_paths(data_dir):
+        groups[match_scene(load_image(path, config["image_size"]), manifest)].append(path)
+    if len(groups) != config["clusters"]:
+        raise ValueError("config clusters does not match the scene manifest")
+    lut_paths = []
+    for index, paths in enumerate(groups):
+        if not paths:
+            raise ValueError(f"cluster {index} has no images")
+        model = load_model(base_checkpoint)
+        if model.hidden_dim != config["hidden_dim"] or model.depth != config["depth"]:
+            raise ValueError("finetune model dimensions do not match the base checkpoint")
+        model = train_model(paths, config, model, output / f"cluster_{index}_training_history.csv")
+        save_model(model, output / f"cluster_{index}_checkpoint.pt")
+        lut_path = output / f"cluster_{index}_lut.pt"
+        torch.save({"lut": generate_lut(model, config["lut_resolution"], config["device"])}, lut_path)
+        lut_paths.append(lut_path.name)
+    save_scene_manifest(manifest_path, manifest["centers"], manifest["mean"], manifest["std"], lut_paths)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train screen adaptor")
-    parser.add_argument("--data-dir", required=True)
-    parser.add_argument("--output-dir", default="outputs")
-    parser.add_argument("--config", default="configs/train.json")
+    parser = argparse.ArgumentParser(description="Screen-adaptor training phases")
+    commands = parser.add_subparsers(dest="command", required=True)
+    pretrain_parser = commands.add_parser("pretrain")
+    pretrain_parser.add_argument("--data-dir", required=True)
+    pretrain_parser.add_argument("--output-dir", default="outputs")
+    pretrain_parser.add_argument("--config", default="configs/pretrain_config.json")
+    cluster_parser = commands.add_parser("cluster")
+    cluster_parser.add_argument("--data-dir", required=True)
+    cluster_parser.add_argument("--manifest", default="outputs/scene_manifest.json")
+    cluster_parser.add_argument("--config", default="configs/finetune_config.json")
+    finetune_parser = commands.add_parser("finetune")
+    finetune_parser.add_argument("--data-dir", required=True)
+    finetune_parser.add_argument("--output-dir", default="outputs")
+    finetune_parser.add_argument("--base-checkpoint", default="outputs/base_checkpoint.pt")
+    finetune_parser.add_argument("--manifest", default="outputs/scene_manifest.json")
+    finetune_parser.add_argument("--config", default="configs/finetune_config.json")
     args = parser.parse_args()
     config = json.loads(Path(args.config).read_text(encoding="utf-8"))
     validate_config(config)
-    train(args.data_dir, args.output_dir, config)
+    if args.command == "pretrain":
+        pretrain(args.data_dir, args.output_dir, config)
+    elif args.command == "cluster":
+        cluster(args.data_dir, args.manifest, config)
+    else:
+        finetune(args.data_dir, args.output_dir, args.base_checkpoint, args.manifest, config)
 
 
 if __name__ == "__main__":

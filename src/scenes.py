@@ -46,7 +46,9 @@ def cluster_dkl_scenes(features, number_of_clusters, seed=0, max_iter=100):
 
 def save_scene_manifest(path, centers, mean, std, lut_paths):
     payload = {"feature": "dkl_mean_std_median", "centers": np.asarray(centers).tolist(), "mean": np.asarray(mean).tolist(), "std": np.asarray(std).tolist(), "lut_paths": [str(p) for p in lut_paths]}
-    Path(path).write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
 def load_scene_manifest(path):
