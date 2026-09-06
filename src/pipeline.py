@@ -90,14 +90,10 @@ def train_model(paths, config, initial_model=None, history_path=None):
     if not paths:
         raise ValueError("training dataset contains no images")
     rng = np.random.default_rng(seed)
-    history_file = None
-    history_writer = None
+    history = []
     if history_path:
         history_path = Path(history_path)
         history_path.parent.mkdir(parents=True, exist_ok=True)
-        history_file = history_path.open("w", newline="", encoding="utf-8")
-        history_writer = csv.DictWriter(history_file, fieldnames=["step", "total", "power", "metam", "weber", "ssim", "power_term", "metam_term", "weber_term", "ssim_term", "power_saving"])
-        history_writer.writeheader()
     for step in range(steps):
         optimizer.zero_grad()
         batch = [torch.from_numpy(load_image(paths[int(rng.integers(len(paths)))], size)).to(device) for _ in range(batch_size)]
@@ -111,8 +107,8 @@ def train_model(paths, config, initial_model=None, history_path=None):
             values = " ".join(f"{k}={float(v):.6f}" for k, v in losses.items())
             values += f" power_saving={saving:.6f}"
             print(f"step={step + 1}/{steps} {values}")
-            if history_writer:
-                history_writer.writerow({
+            if history_path:
+                history.append({
                     "step": step + 1,
                     **{key: float(value) for key, value in losses.items()},
                     "power_term": active_loss.lambda_power * float(losses["power"]),
@@ -121,9 +117,11 @@ def train_model(paths, config, initial_model=None, history_path=None):
                     "ssim_term": active_loss.lambda_ssim * float(losses["ssim"]),
                     "power_saving": saving,
                 })
-                history_file.flush()
-    if history_file:
-        history_file.close()
+    if history_path:
+        with history_path.open("w", newline="", encoding="utf-8") as history_file:
+            writer = csv.DictWriter(history_file, fieldnames=history[0])
+            writer.writeheader()
+            writer.writerows(history)
     return model.eval()
 
 
