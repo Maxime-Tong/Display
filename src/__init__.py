@@ -1,0 +1,1 @@
+"""Screen-adaptor algorithms."""

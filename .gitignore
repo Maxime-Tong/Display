@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.pt
+*.pth
+*.ckpt
+outputs/
+results/
+logs/
+*.log
+.idea/
+.vscode/
+Thumbs.db
