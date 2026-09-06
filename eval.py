@@ -45,6 +45,7 @@ def main():
     parser.add_argument("--scene-manifest")
     parser.add_argument("--match-distance-threshold", type=float, default=1.8, help="Use the base model/LUT above this DKL distance; <= 0 disables switching")
     parser.add_argument("--output-dir", default="results")
+    parser.add_argument("--save", action="store_true", help="Save optimized images")
     parser.add_argument("--max-images", type=int, default=0)
     parser.add_argument("--power-weights", nargs=3, type=float, default=[0.22970384, 0.24373232, 0.5265638])
     parser.add_argument("--device", default=None, help="PyTorch device; defaults to CUDA when available")
@@ -90,7 +91,8 @@ def main():
         else:
             optimized = apply_lut(lut, original)
         optimized_np = optimized.detach().cpu().numpy()
-        Image.fromarray((optimized_np * 255).round().clip(0, 255).astype(np.uint8)).save(output / path.name)
+        if args.save:
+            Image.fromarray((optimized_np * 255).round().clip(0, 255).astype(np.uint8)).save(output / path.name)
         row = {"filename": path.name, **evaluate_image(original, optimized, metam, args.power_weights)}
         if cluster_id is not None:
             row.update(cluster_id=cluster_id, matched_cluster_id=matched_cluster_id, match_distance=match_distance, used_fallback=used_fallback)

@@ -12,12 +12,16 @@
   "clusters": 4,
   "seed": 0,
   "loss": {
-    "power_weights": [0.22970384, 0.24373232, 0.5265638],
-    "target_alpha": 0.83,
+    "power_weights": [
+      0.22970384,
+      0.24373232,
+      0.5265638
+    ],
+    "target_alpha": 0.80,
     "lambda_power": 50.0,
     "lambda_metam": 1.0,
-    "lambda_weber": 0.0,
-    "weber_epsilon": 0.1,
+    "lambda_weber": 0.2,
+    "weber_epsilon": 1.0,
     "lambda_ssim": 1.0
   }
 }
