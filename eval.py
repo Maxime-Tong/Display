@@ -35,7 +35,6 @@ def main():
     model = load_model(args.model, device) if args.model else None
     asset = torch.load(args.lut, map_location=device) if args.lut else None
     lut = asset["lut"].to(device) if asset else None
-    compensation = asset.get("channel_compensation", (1, 1, 1)) if asset else None
     paths = sorted(p for p in Path(args.data_dir).rglob("*") if p.suffix.lower() in IMAGE_EXTENSIONS)
     if args.max_images:
         paths = paths[:args.max_images]
@@ -51,7 +50,7 @@ def main():
     for path in paths:
         original = load_rgb(path).to(device)
         with torch.no_grad():
-            optimized = model(original) if model else apply_lut(lut, original, compensation)
+            optimized = model(original) if model else apply_lut(lut, original)
             metam_value = metam(optimized.permute(2, 0, 1).unsqueeze(0),
                                 original.permute(2, 0, 1).unsqueeze(0), gaze=[0.5, 0.5])
         a, b = original.cpu().numpy(), optimized.cpu().numpy()

@@ -45,7 +45,7 @@ def sample_images_per_scene(data_dir, samples_per_scene, seed=0):
 def validate_config(config):
     allowed = {"_comment", "image_size", "batch_size", "steps", "lr", "device",
                "hidden_dim", "depth", "lut_resolution", "log_interval", "seed",
-               "samples_per_scene", "channel_compensation", "loss"}
+               "samples_per_scene", "loss"}
     unknown = set(config) - allowed
     if unknown:
         raise ValueError(f"unknown config items: {', '.join(sorted(unknown))}")
@@ -55,9 +55,6 @@ def validate_config(config):
             raise ValueError(f"{name} must be a positive integer")
     if config.get("max_grad_norm", 1.0) <= 0:
         raise ValueError("max_grad_norm must be positive")
-    compensation = config["channel_compensation"]
-    if len(compensation) != 3 or any(value <= 0 for value in compensation):
-        raise ValueError("channel_compensation must contain three positive values")
     active_loss = LossConfig(**config["loss"])
     if not 0 < active_loss.target_alpha <= 1:
         raise ValueError("target_alpha must be in (0, 1]")
@@ -73,7 +70,7 @@ def train(data_dir, output_dir, config, max_images=0):
     if max_images:
         paths = paths[:max_images]
     model = FactorModel(config["hidden_dim"], config["depth"],
-                        config["channel_compensation"]).to(device).train()
+                        loss_config.target_alpha).to(device).train()
     criterion = CombinedLoss(loss_config, device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
     rng, history, skipped = np.random.default_rng(seed), [], 0
@@ -108,8 +105,7 @@ def train(data_dir, output_dir, config, max_images=0):
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     save_model(model.eval(), output / "factor_checkpoint.pt")
-    torch.save({"lut": generate_lut(model, config["lut_resolution"], device),
-                "channel_compensation": config["channel_compensation"]}, output / "factor_lut.pt")
+    torch.save({"lut": generate_lut(model, config["lut_resolution"], device)}, output / "factor_lut.pt")
     with (output / "training_history.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=history[0])
         writer.writeheader()

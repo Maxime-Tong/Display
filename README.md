@@ -6,12 +6,13 @@ Learn a lightweight scalar power factor from three per-pixel features:
 - local texture strength from finite differences;
 - normalized radial screen position.
 
-The network applies the factor directly to linear RGB with a fixed per-channel
-compensation vector. Its one-channel output head is trained directly by the
+The network applies a scalar alpha directly to linear RGB. Its one-channel
+output head is trained directly by the
 ML-PEA power target and uses a smooth bounded activation:
 
 ```text
 factor = (tanh(network(features)) + 1) * 0.5
+alpha = target_alpha * factor
 ```
 
 The final network bias starts at `4`, giving an initial factor near `1` while

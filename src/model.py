@@ -27,8 +27,7 @@ def factor_features(image):
 
 
 class FactorModel(nn.Module):
-    def __init__(self, hidden_dim=32, depth=2,
-                 channel_compensation=(1.0, 1.0, 1.0)):
+    def __init__(self, hidden_dim=32, depth=2, target_alpha=0.8):
         super().__init__()
         layers, width = [], 3
         for _ in range(depth):
@@ -39,7 +38,7 @@ class FactorModel(nn.Module):
         nn.init.zeros_(self.network[-1].weight)
         nn.init.constant_(self.network[-1].bias, 4.0)
         self.hidden_dim, self.depth = hidden_dim, depth
-        self.register_buffer("channel_compensation", torch.tensor(channel_compensation))
+        self.target_alpha = float(target_alpha)
 
     def factor(self, features):
         # ML-PEA learns the global power target; tanh keeps the scalar alpha
@@ -47,8 +46,8 @@ class FactorModel(nn.Module):
         return (torch.tanh(self.network(features)) + 1.0) * 0.5
 
     def forward(self, image):
-        factor = self.factor(factor_features(image))
-        linear = srgb_to_linear(image) * factor * self.channel_compensation
+        alpha = self.target_alpha * self.factor(factor_features(image))
+        linear = srgb_to_linear(image) * alpha
         return linear_to_srgb(linear.clamp(0, 1))
 
 
@@ -57,7 +56,7 @@ def generate_lut(model, resolution=16, device="cpu"):
     features = torch.stack(torch.meshgrid(axis, axis, axis, indexing="ij"), -1)
     model = model.to(device).eval()
     with torch.no_grad():
-        return model.factor(features).cpu()
+        return (model.target_alpha * model.factor(features)).cpu()
 
 
 def _interpolate_lut(lut, features):
@@ -80,21 +79,20 @@ def _interpolate_lut(lut, features):
     return out
 
 
-def apply_lut(lut, image, channel_compensation=(1.0, 1.0, 1.0)):
-    factor = _interpolate_lut(lut, factor_features(image))
-    compensation = image.new_tensor(channel_compensation)
-    return linear_to_srgb((srgb_to_linear(image) * factor * compensation).clamp(0, 1))
+def apply_lut(lut, image):
+    alpha = _interpolate_lut(lut, factor_features(image))
+    return linear_to_srgb((srgb_to_linear(image) * alpha).clamp(0, 1))
 
 
 def save_model(model, path):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     torch.save({"state_dict": model.state_dict(), "hidden_dim": model.hidden_dim,
-                "depth": model.depth}, path)
+                "depth": model.depth, "target_alpha": model.target_alpha}, path)
 
 
 def load_model(path, device="cpu"):
     checkpoint = torch.load(path, map_location=device)
-    compensation = checkpoint["state_dict"]["channel_compensation"].tolist()
-    model = FactorModel(checkpoint["hidden_dim"], checkpoint["depth"], compensation).to(device)
+    model = FactorModel(checkpoint["hidden_dim"], checkpoint["depth"],
+                        checkpoint["target_alpha"]).to(device)
     model.load_state_dict(checkpoint["state_dict"])
     return model.eval()

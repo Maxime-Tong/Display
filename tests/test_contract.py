@@ -17,7 +17,7 @@ class ContractTest(unittest.TestCase):
         features = model.factor_features(image)
         self.assertEqual(features.shape, (16, 16, 3))
         self.assertTrue(torch.allclose(features[..., 1], torch.zeros(16, 16)))
-        output = model.FactorModel()(image)
+        output = model.FactorModel(target_alpha=1.0)(image)
         self.assertLess(float((output - image).abs().max()), 0.01)
 
     def test_texture_detects_an_edge(self):
