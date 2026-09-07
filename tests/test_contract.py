@@ -24,6 +24,12 @@ class ContractTest(unittest.TestCase):
             for name in names:
                 self.assertTrue(callable(getattr(module, name, None)), name)
 
+    def test_model_features_are_three_normalized_channels(self):
+        features = model.model_features(torch.rand(9, 11, 3))
+        self.assertEqual(features.shape, (9, 11, 3))
+        self.assertGreaterEqual(float(features.min()), 0.0)
+        self.assertLessEqual(float(features.max()), 1.0)
+
     def test_power_target_and_gradient(self):
         original = torch.full((8, 8, 3), 0.5)
         linear_target = color.srgb_to_linear(original) * 0.8

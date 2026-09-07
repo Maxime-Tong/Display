@@ -6,7 +6,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn.functional as F
 from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
@@ -30,17 +29,7 @@ def load_rgb(path, device):
 
 
 def blockwise_lut(lut, image, block_size):
-    if block_size == 1:
-        return apply_lut(lut, image)
-    h, w = image.shape[:2]
-    pad_h, pad_w = (-h) % block_size, (-w) % block_size
-    mode = "reflect" if h > 1 and w > 1 and pad_h < h and pad_w < w else "replicate"
-    padded = F.pad(image.permute(2, 0, 1)[None], (0, pad_w, 0, pad_h), mode=mode)
-    average = F.avg_pool2d(padded, block_size, block_size)[0].permute(1, 2, 0)
-    transformed = apply_lut(lut, average)
-    average = average.repeat_interleave(block_size, 0).repeat_interleave(block_size, 1)[:h, :w]
-    transformed = transformed.repeat_interleave(block_size, 0).repeat_interleave(block_size, 1)[:h, :w]
-    return (transformed * image / average.clamp_min(1e-6)).clamp(0, 1)
+    return apply_lut(lut, image, tile_size=block_size)
 
 
 class Assets:
