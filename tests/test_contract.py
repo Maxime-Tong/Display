@@ -30,6 +30,10 @@ class ContractTest(unittest.TestCase):
         self.assertGreaterEqual(float(features.min()), 0.0)
         self.assertLessEqual(float(features.max()), 1.0)
 
+    def test_model_chroma_is_zero_for_grayscale(self):
+        image = torch.rand(9, 11, 1).expand(-1, -1, 3)
+        self.assertTrue(torch.allclose(model.model_features(image)[..., 2], torch.zeros(9, 11)))
+
     def test_power_target_and_gradient(self):
         original = torch.full((8, 8, 3), 0.5)
         linear_target = color.srgb_to_linear(original) * 0.8
