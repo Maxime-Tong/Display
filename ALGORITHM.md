@@ -6,8 +6,8 @@ and maintenance.
 
 ## Scope
 
-Keep multiplicative per-pixel color adaptation, an ML-PEA-like global power
-target loss, MetaM, Weber, SSIM, original DKL scene clustering, base training,
+Keep multiplicative per-pixel color adaptation, an ML-PEA-like 4x4 tile-wise
+power target loss, MetaM, Weber, SSIM, original DKL scene clustering, base training,
 optional per-cluster fine-tuning, and LUT export. Do not add new clustering
 methods or optimization strategies.
 
@@ -48,21 +48,21 @@ The package is imported directly from `src`; do not create a nested
    ```
 
 3. Convert input and optimized images to linear RGB.
-4. Compute the effective ML-PEA dynamic power:
+4. Compute the effective ML-PEA dynamic power independently for each 4x4 tile:
 
    ```python
-   input_power = mean(input_linear[..., 0]) \\
-               + mean(input_linear[..., 1]) \\
-               + mean(input_linear[..., 2])
-   output_power = mean(output_linear[..., 0]) \\
-                + mean(output_linear[..., 1]) \\
-                + mean(output_linear[..., 2])
+   input_power[tile] = mean(input_linear[tile, ..., 0]) \\
+                    + mean(input_linear[tile, ..., 1]) \\
+                    + mean(input_linear[tile, ..., 2])
+   output_power[tile] = mean(output_linear[tile, ..., 0]) \\
+                     + mean(output_linear[tile, ..., 1]) \\
+                     + mean(output_linear[tile, ..., 2])
    target_power = target_alpha * input_power
-   power_loss = (output_power - target_power) ** 2
+   power_loss = mean((output_power - target_power) ** 2)
    ```
 
-   This is like ML-PEA: global power target plus squared error. `target_alpha`
-   is the retained-power factor; the original ML-PEA setup uses `r = 0.8`.
+   This preserves the ML-PEA target while preventing a single global gain from
+   satisfying the entire image. `target_alpha` is the retained-power factor.
 
 5. Compute the other three losses independently:
 

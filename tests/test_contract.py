@@ -39,6 +39,13 @@ class ContractTest(unittest.TestCase):
         value.backward()
         self.assertTrue(torch.isfinite(optimized.grad).all())
 
+    def test_power_target_is_tilewise(self):
+        original = torch.zeros(8, 8, 3)
+        original[:4, :4] = 0.2
+        original[4:, 4:] = 0.8
+        optimized = color.linear_to_srgb(color.srgb_to_linear(original) * 0.8)
+        self.assertLess(float(losses.power_loss(original, optimized, 0.8)), 1e-10)
+
     def test_dkl_clustering(self):
         images = [np.full((4, 4, 3), value, np.float32) for value in (0.1, 0.2, 0.8, 0.9)]
         features = np.stack([scenes.extract_dkl_feature(image) for image in images])

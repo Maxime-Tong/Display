@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 
 from .perception import MetamericLossUniform
-from .power import dynamic_power
+from .color import srgb_to_linear
 
 
 @dataclass(frozen=True)
@@ -21,7 +21,15 @@ class LossConfig:
 
 
 def power_loss(original, optimized, target_alpha=0.8):
-    return (dynamic_power(optimized) - target_alpha * dynamic_power(original)) ** 2
+    """Match retained linear-RGB power independently in each 4x4 tile."""
+    def tile_power(image):
+        linear = srgb_to_linear(image)
+        h, w = image.shape[:2]
+        pad_h, pad_w = (-h) % 4, (-w) % 4
+        padded = F.pad(linear.permute(2, 0, 1)[None], (0, pad_w, 0, pad_h), mode="replicate")
+        return F.avg_pool2d(padded, 4, 4).sum(dim=1)
+
+    return (tile_power(optimized) - target_alpha * tile_power(original)).square().mean()
 
 
 def weber_loss(original, optimized, weights=(0.22970384, 0.24373232, 0.5265638), epsilon=0.01):
