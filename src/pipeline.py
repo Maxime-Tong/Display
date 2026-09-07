@@ -75,11 +75,13 @@ def train(data_dir, output_dir, config, max_images=0):
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
     rng, history, skipped = np.random.default_rng(seed), [], 0
     for step in range(config["steps"]):
-        batch = [torch.from_numpy(load_image(paths[int(rng.integers(len(paths)))],
-                                             config["image_size"])).to(device)
-                 for _ in range(config["batch_size"])]
+        batch = torch.stack([
+            torch.from_numpy(load_image(paths[int(rng.integers(len(paths)))],
+                                        config["image_size"]))
+            for _ in range(config["batch_size"])
+        ]).to(device)
         optimizer.zero_grad()
-        outputs = [model(image) for image in batch]
+        outputs = model(batch)
         items = [criterion(image, output) for image, output in zip(batch, outputs)]
         losses = {name: torch.stack([item[name] for item in items]).mean() for name in items[0]}
         if not torch.isfinite(losses["total"]):

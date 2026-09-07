@@ -25,6 +25,14 @@ class ContractTest(unittest.TestCase):
         image[:, 8:] = 1
         self.assertGreater(float(model.factor_features(image)[..., 1].max()), 0.1)
 
+    def test_model_supports_batched_images(self):
+        images = torch.rand(3, 16, 16, 3)
+        features = model.factor_features(images)
+        outputs = model.FactorModel()(images)
+        self.assertEqual(features.shape, (3, 16, 16, 3))
+        self.assertEqual(outputs.shape, images.shape)
+        self.assertTrue(torch.isfinite(outputs).all())
+
     def test_lut_matches_model(self):
         torch.manual_seed(0)
         image = torch.rand(16, 16, 3)

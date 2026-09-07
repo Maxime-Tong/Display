@@ -13,16 +13,28 @@ LUMA_WEIGHTS = (0.2126, 0.7152, 0.0722)
 
 
 def factor_features(image):
-    """Return HWC features: linear luminance, texture strength, radial position."""
+    """Return HWC or BHWC features: luminance, texture, radial position."""
+    if image.ndim not in (3, 4) or image.shape[-1] != 3:
+        raise ValueError("image must have shape HWC or BHWC")
+    batched = image.ndim == 4
     linear = srgb_to_linear(image)
     luminance = (linear * image.new_tensor(LUMA_WEIGHTS)).sum(-1)
-    dx = F.pad((luminance[:, 1:] - luminance[:, :-1]).abs(), (0, 1))
-    dy = F.pad((luminance[1:, :] - luminance[:-1, :]).abs(), (0, 0, 0, 1))
-    texture = F.avg_pool2d((dx + dy)[None, None], 3, 1, 1)[0, 0].clamp(0, 1)
-    y = torch.linspace(-1, 1, image.shape[0], device=image.device, dtype=image.dtype)
-    x = torch.linspace(-1, 1, image.shape[1], device=image.device, dtype=image.dtype)
+    dx_source = luminance[..., 1:] - luminance[..., :-1]
+    dx = torch.cat((dx_source.abs(), torch.zeros_like(dx_source[..., :1])), dim=-1)
+    dy_source = luminance[:, 1:, :] - luminance[:, :-1, :] if batched else luminance[1:, :] - luminance[:-1, :]
+    dy = torch.cat((dy_source.abs(), torch.zeros_like(dy_source[..., :1, :])), dim=-2)
+    texture_input = (dx + dy).unsqueeze(1) if batched else (dx + dy)[None, None]
+    texture = F.avg_pool2d(texture_input, 3, 1, 1).squeeze(1)
+    if not batched:
+        texture = texture[0]
+    texture = texture.clamp(0, 1)
+    height, width = image.shape[-3:-1]
+    y = torch.linspace(-1, 1, height, device=image.device, dtype=image.dtype)
+    x = torch.linspace(-1, 1, width, device=image.device, dtype=image.dtype)
     yy, xx = torch.meshgrid(y, x, indexing="ij")
     position = torch.sqrt(xx.square() + yy.square()).div(2 ** 0.5).clamp(0, 1)
+    if batched:
+        position = position.expand(image.shape[0], -1, -1)
     return torch.stack((luminance, texture, position), -1)
 
 
