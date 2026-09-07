@@ -47,9 +47,9 @@ The package is imported directly from `src`; do not create a nested
    optimized = clamp(input * gain, 0, 1)
    ```
 
-   The three normalized feature channels are fixed-range log-luminance,
-   4x4 local RMS contrast, and linear-RGB chroma (`max(channel) -
-   min(channel)`).
+   The three normalized feature channels are OKLab brightness (`L`),
+   OKLab saturation from chroma (`sqrt(a^2 + b^2)`), and 4x4 texture density
+   from mean local brightness-gradient magnitude.
 
 3. Convert input and optimized images to linear RGB.
 4. Compute the effective ML-PEA dynamic power independently for each 4x4 tile:

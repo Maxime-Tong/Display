@@ -32,7 +32,11 @@ class ContractTest(unittest.TestCase):
 
     def test_model_chroma_is_zero_for_grayscale(self):
         image = torch.rand(9, 11, 1).expand(-1, -1, 3)
-        self.assertTrue(torch.allclose(model.model_features(image)[..., 2], torch.zeros(9, 11)))
+        self.assertTrue(torch.allclose(model.model_features(image)[..., 1], torch.zeros(9, 11)))
+
+    def test_model_texture_is_zero_for_constant_image(self):
+        features = model.model_features(torch.full((9, 11, 3), 0.5))
+        self.assertLess(float(features[..., 2].max()), 1e-6)
 
     def test_power_target_and_gradient(self):
         original = torch.full((8, 8, 3), 0.5)

@@ -6,28 +6,30 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from .color import srgb_to_linear
+from .color import rgb_to_oklab, srgb_to_linear
 
 
 def model_features(image, tile_size=4):
-    """Return fixed-range log-luminance, local contrast, and chroma."""
+    """Return OKLab brightness, saturation, and 4x4 texture density."""
     if image.shape[-1] != 3:
         raise ValueError("image must have three channels")
     if tile_size <= 0:
         raise ValueError("tile_size must be positive")
     linear = srgb_to_linear(image.clamp(0, 1))
-    luminance = linear @ image.new_tensor([0.2126, 0.7152, 0.0722])
-    luminance = torch.log1p(10 * luminance) / torch.log1p(image.new_tensor(10.0))
+    oklab = rgb_to_oklab(linear)
+    brightness = oklab[..., 0].clamp(0, 1)
+    chroma = torch.linalg.vector_norm(oklab[..., 1:], dim=-1)
+    chroma = torch.where(chroma < 1e-6, torch.zeros_like(chroma), chroma)
+    saturation = 1 - torch.exp(-chroma / (brightness + 0.05) / 0.5)
     h, w = image.shape[-3:-1]
     pad_h, pad_w = (-h) % tile_size, (-w) % tile_size
-    tiles = F.pad(luminance[None, None], (0, pad_w, 0, pad_h), mode="replicate")
-    mean = F.avg_pool2d(tiles, tile_size, tile_size)
-    std = (F.avg_pool2d(tiles.square(), tile_size, tile_size) - mean.square()).clamp_min(0).sqrt()
-    std = std.repeat_interleave(tile_size, -2).repeat_interleave(tile_size, -1)[..., :h, :w][0, 0]
-    tile_mean = mean[0, 0].repeat_interleave(tile_size, -2).repeat_interleave(tile_size, -1)[..., :h, :w]
-    contrast = 1 - torch.exp(-std / (tile_mean + 0.01) / 0.25)
-    chroma = (linear.max(dim=-1).values - linear.min(dim=-1).values).clamp(0, 1)
-    return torch.stack((luminance, contrast.clamp(0, 1), chroma), -1)
+    dx = F.pad((brightness[:, 1:] - brightness[:, :-1]).abs(), (0, 1))
+    dy = F.pad((brightness[1:] - brightness[:-1]).abs(), (0, 0, 0, 1))
+    texture = F.pad((dx.square() + dy.square()).sqrt()[None, None], (0, pad_w, 0, pad_h), mode="replicate")
+    texture = F.avg_pool2d(texture, tile_size, tile_size)
+    texture = texture.repeat_interleave(tile_size, -2).repeat_interleave(tile_size, -1)[..., :h, :w][0, 0]
+    texture = 1 - torch.exp(-texture / 0.05)
+    return torch.stack((brightness, saturation.clamp(0, 1), texture.clamp(0, 1)), -1)
 
 
 class ColorModel(nn.Module):
