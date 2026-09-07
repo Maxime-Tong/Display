@@ -45,7 +45,7 @@ def sample_images_per_scene(data_dir, samples_per_scene, seed=0):
 def validate_config(config):
     allowed = {"_comment", "image_size", "batch_size", "steps", "lr", "device",
                "hidden_dim", "depth", "lut_resolution", "log_interval", "seed",
-               "samples_per_scene", "max_attenuation", "channel_compensation", "loss"}
+               "samples_per_scene", "channel_compensation", "loss"}
     unknown = set(config) - allowed
     if unknown:
         raise ValueError(f"unknown config items: {', '.join(sorted(unknown))}")
@@ -55,8 +55,6 @@ def validate_config(config):
             raise ValueError(f"{name} must be a positive integer")
     if config.get("max_grad_norm", 1.0) <= 0:
         raise ValueError("max_grad_norm must be positive")
-    if not 0 < config["max_attenuation"] < 1:
-        raise ValueError("max_attenuation must be in (0, 1)")
     compensation = config["channel_compensation"]
     if len(compensation) != 3 or any(value <= 0 for value in compensation):
         raise ValueError("channel_compensation must contain three positive values")
@@ -74,7 +72,7 @@ def train(data_dir, output_dir, config, max_images=0):
     paths = sample_images_per_scene(data_dir, config["samples_per_scene"], seed)
     if max_images:
         paths = paths[:max_images]
-    model = FactorModel(config["hidden_dim"], config["depth"], config["max_attenuation"],
+    model = FactorModel(config["hidden_dim"], config["depth"],
                         config["channel_compensation"]).to(device).train()
     criterion = CombinedLoss(loss_config, device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])

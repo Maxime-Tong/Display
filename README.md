@@ -7,15 +7,17 @@ Learn a lightweight scalar power factor from three per-pixel features:
 - normalized radial screen position.
 
 The network applies the factor directly to linear RGB with a fixed per-channel
-compensation vector. Its output activation is bounded near identity:
+compensation vector. Its one-channel output head is initialized to one and is
+trained directly by the ML-PEA power target:
 
 ```text
-factor = 1 - max_attenuation * sigmoid(network(features))
+factor = clamp(network(features), 0, 1)
 ```
 
-The final network layer starts near factor `1`. After training, the mapping is
-exported as a trilinearly interpolated `16 x 16 x 16` scalar LUT, so deployment
-only needs feature extraction and one LUT lookup per pixel.
+The final network layer starts at factor `1`; the clamp is only a safety
+boundary. After training, the mapping is exported as a trilinearly
+interpolated `16 x 16 x 16` scalar LUT, so deployment only needs feature
+extraction and one LUT lookup per pixel.
 
 ## Train
 

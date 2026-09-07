@@ -27,7 +27,7 @@ def factor_features(image):
 
 
 class FactorModel(nn.Module):
-    def __init__(self, hidden_dim=32, depth=2, max_attenuation=0.5,
+    def __init__(self, hidden_dim=32, depth=2,
                  channel_compensation=(1.0, 1.0, 1.0)):
         super().__init__()
         layers, width = [], 3
@@ -37,13 +37,14 @@ class FactorModel(nn.Module):
         layers.append(nn.Linear(width, 1))
         self.network = nn.Sequential(*layers)
         nn.init.zeros_(self.network[-1].weight)
-        nn.init.constant_(self.network[-1].bias, -4.0)
+        nn.init.constant_(self.network[-1].bias, 1.0)
         self.hidden_dim, self.depth = hidden_dim, depth
-        self.max_attenuation = float(max_attenuation)
         self.register_buffer("channel_compensation", torch.tensor(channel_compensation))
 
     def factor(self, features):
-        return 1.0 - self.max_attenuation * torch.sigmoid(self.network(features))
+        # ML-PEA learns the global power target; this head predicts its local
+        # scalar factor directly. The clamp is only a safety boundary.
+        return self.network(features).clamp(0, 1)
 
     def forward(self, image):
         factor = self.factor(factor_features(image))
@@ -88,13 +89,12 @@ def apply_lut(lut, image, channel_compensation=(1.0, 1.0, 1.0)):
 def save_model(model, path):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     torch.save({"state_dict": model.state_dict(), "hidden_dim": model.hidden_dim,
-                "depth": model.depth, "max_attenuation": model.max_attenuation}, path)
+                "depth": model.depth}, path)
 
 
 def load_model(path, device="cpu"):
     checkpoint = torch.load(path, map_location=device)
     compensation = checkpoint["state_dict"]["channel_compensation"].tolist()
-    model = FactorModel(checkpoint["hidden_dim"], checkpoint["depth"],
-                        checkpoint["max_attenuation"], compensation).to(device)
+    model = FactorModel(checkpoint["hidden_dim"], checkpoint["depth"], compensation).to(device)
     model.load_state_dict(checkpoint["state_dict"])
     return model.eval()

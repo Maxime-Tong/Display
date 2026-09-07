@@ -8,7 +8,6 @@
   "hidden_dim": 32,
   "depth": 2,
   "lut_resolution": 16,
-  "max_attenuation": 0.5,
   "channel_compensation": [1.0, 1.0, 1.0],
   "log_interval": 10,
   "seed": 0,
