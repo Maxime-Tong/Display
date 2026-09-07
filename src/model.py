@@ -37,14 +37,14 @@ class FactorModel(nn.Module):
         layers.append(nn.Linear(width, 1))
         self.network = nn.Sequential(*layers)
         nn.init.zeros_(self.network[-1].weight)
-        nn.init.constant_(self.network[-1].bias, 1.0)
+        nn.init.constant_(self.network[-1].bias, 4.0)
         self.hidden_dim, self.depth = hidden_dim, depth
         self.register_buffer("channel_compensation", torch.tensor(channel_compensation))
 
     def factor(self, features):
-        # ML-PEA learns the global power target; this head predicts its local
-        # scalar factor directly. The clamp is only a safety boundary.
-        return self.network(features).clamp(0, 1)
+        # ML-PEA learns the global power target; tanh keeps the scalar alpha
+        # bounded while retaining smooth gradients. Bias 4 starts near one.
+        return (torch.tanh(self.network(features)) + 1.0) * 0.5
 
     def forward(self, image):
         factor = self.factor(factor_features(image))
