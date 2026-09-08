@@ -79,4 +79,4 @@ python -m py_compile src/*.py eval.py
 python -m unittest discover -s tests
 ```
 
-Dependencies: Python 3.10+, PyTorch, NumPy, Pillow, and scikit-image.
+Dependencies: Python 3.10+, PyTorch, NumPy, Pillow, scikit-image, and `lpips`.
