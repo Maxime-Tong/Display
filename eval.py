@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import lpips
 from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
@@ -23,9 +24,13 @@ def load_rgb(path):
     return torch.from_numpy(np.asarray(Image.open(path).convert("RGB"), dtype=np.float32) / 255.0)
 
 
-def evaluate_image(original, optimized, metam, power_weights):
+def evaluate_image(original, optimized, metam, lpips_model, power_weights):
     with torch.no_grad():
         metam_value = metam(optimized.permute(2, 0, 1).unsqueeze(0), original.permute(2, 0, 1).unsqueeze(0), gaze=[0.5, 0.5])
+        lpips_value = lpips_model(
+            optimized.permute(2, 0, 1).unsqueeze(0) * 2 - 1,
+            original.permute(2, 0, 1).unsqueeze(0) * 2 - 1,
+        ).item()
     a = original.detach().cpu().numpy()
     b = optimized.detach().cpu().numpy()
     return {
@@ -33,6 +38,7 @@ def evaluate_image(original, optimized, metam, power_weights):
         "psnr": float(peak_signal_noise_ratio(a, b, data_range=1.0)),
         "ssim": float(structural_similarity(a, b, channel_axis=2, data_range=1.0)),
         "metam": float(metam_value),
+        "lpips": lpips_value,
     }
 
 
@@ -66,6 +72,7 @@ def main():
     lut = torch.load(args.lut, map_location=device)["lut"].to(device) if args.lut else None
     manifest = load_scene_manifest(args.scene_manifest) if args.scene_manifest else None
     metam = MetamericLoss(device=device, real_image_width=1.4, real_viewing_distance=0.7, equi=False, alpha=5.0, mode="quadratic", loss_type="L1", use_l2_foveal_loss=False, n_pyramid_levels=5, n_orientations=4, use_radial_weight=True)
+    lpips_model = lpips.LPIPS(net="alex").to(device).eval()
     rows = []
     for current, path in enumerate(paths, 1):
         original = load_rgb(path).to(device)
@@ -93,18 +100,18 @@ def main():
         optimized_np = optimized.detach().cpu().numpy()
         if args.save:
             Image.fromarray((optimized_np * 255).round().clip(0, 255).astype(np.uint8)).save(output / path.name)
-        row = {"filename": path.name, **evaluate_image(original, optimized, metam, args.power_weights)}
+        row = {"filename": path.name, **evaluate_image(original, optimized, metam, lpips_model, args.power_weights)}
         if cluster_id is not None:
             row.update(cluster_id=cluster_id, matched_cluster_id=matched_cluster_id, match_distance=match_distance, used_fallback=used_fallback)
         rows.append(row)
         prefix = f"[{current}/{len(paths)}] {path.name}"
         if cluster_id is not None:
             prefix += f" cluster_id={cluster_id} matched_cluster_id={matched_cluster_id} distance={match_distance:.6f} fallback={used_fallback}"
-        metrics = " ".join(f"{key}={row[key]:.6f}" for key in ("power_saving", "psnr", "ssim", "metam"))
+        metrics = " ".join(f"{key}={row[key]:.6f}" for key in ("power_saving", "psnr", "ssim", "metam", "lpips"))
         print(f"{prefix} {metrics}")
     if not rows:
         raise ValueError("dataset contains no images")
-    summary = {key: float(np.mean([row[key] for row in rows])) for key in ("power_saving", "psnr", "ssim", "metam")}
+    summary = {key: float(np.mean([row[key] for row in rows])) for key in ("power_saving", "psnr", "ssim", "metam", "lpips")}
     (output / "metrics.json").write_text(json.dumps({"images": rows, "summary": summary}, indent=2), encoding="utf-8")
     with (output / "metrics.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
