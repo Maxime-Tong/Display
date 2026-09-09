@@ -22,6 +22,12 @@ from model import base_color_model_gpu as base_color_model
 
 from util.base_delta import base_delta
 
+HVS_MODEL_CONFIG = {
+    "layer_widths": [4, 3],
+    "layer_centres": [5],
+    "rng_seed": 0,
+}
+
 def sRGB2RGB_cupy(sRGB):
   sRGB = cp.clip(sRGB, 0, 1)
   lo_mask = sRGB <= 0.04045
@@ -159,7 +165,7 @@ class Tile_color_optimizer:
 
         self.only_blue = only_blue
 
-        self.color_model = base_color_model.BaseColorModel({})
+        self.color_model = base_color_model.BaseColorModel(HVS_MODEL_CONFIG)
         file_path = os.path.abspath(__file__)
         dirname = os.path.dirname(file_path)
         self.color_model.load(dirname + "/model/model.pth")

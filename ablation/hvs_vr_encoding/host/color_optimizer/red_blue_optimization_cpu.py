@@ -21,6 +21,12 @@ from model import base_color_model as base_color_model
 
 from util.base_delta import base_delta
 
+HVS_MODEL_CONFIG = {
+    "layer_widths": [4, 3],
+    "layer_centres": [5],
+    "rng_seed": 0,
+}
+
 class Tile_color_optimizer_hw_part:
     def __init__(self, color_channel, r_max_vec, b_max_vec):
         self.color_channel = color_channel
@@ -142,7 +148,7 @@ class Tile_color_optimizer:
 
         self.only_blue = only_blue
 
-        self.color_model = base_color_model.BaseColorModel({})
+        self.color_model = base_color_model.BaseColorModel(HVS_MODEL_CONFIG)
         file_path = os.path.abspath(__file__)
         dirname = os.path.dirname(file_path)
         self.color_model.load(dirname + "/model/model.pth")
