@@ -127,7 +127,7 @@ class VRPowerSaver:
         sys.path.insert(0, str(path))
         from color_model.base_color_model import BaseColorModel
         from util.vr_tools import build_ecc_map, build_transition_mask
-        self.model = BaseColorModel([])
+        self.model = BaseColorModel({})
         self.model.load(checkpoint)
         self.build_ecc_map = build_ecc_map
         self.build_transition_mask = build_transition_mask
