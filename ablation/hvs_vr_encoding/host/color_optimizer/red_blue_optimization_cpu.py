@@ -142,7 +142,7 @@ class Tile_color_optimizer:
 
         self.only_blue = only_blue
 
-        self.color_model = base_color_model.BaseColorModel([])
+        self.color_model = base_color_model.BaseColorModel({})
         self.color_model.initialize()
         file_path = os.path.abspath(__file__)
         dirname = os.path.dirname(file_path)

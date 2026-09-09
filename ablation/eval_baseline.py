@@ -92,12 +92,13 @@ class MLPEA:
 
 
 class HVS:
-    def __init__(self, device, fov, max_ecc, tile_size, ecc_no_compress, abc_scaler):
+    def __init__(self, checkpoint, device, fov, max_ecc, tile_size, ecc_no_compress, abc_scaler):
         if device.type != "cpu":
             raise ValueError("hvs-vr-encoding uses its CPU implementation; pass --device cpu")
         path = ROOT / "ablation" / "hvs_vr_encoding" / "host" / "color_optimizer"
         sys.path.insert(0, str(path))
         from red_blue_optimization_cpu import Image_color_optimizer
+        self.checkpoint = checkpoint
         self.fov, self.max_ecc = fov, max_ecc
         self.tile_size = tile_size
         self.ecc_no_compress, self.abc_scaler = ecc_no_compress, abc_scaler
@@ -114,6 +115,8 @@ class HVS:
             tile_size=self.tile_size, abc_scaler=self.abc_scaler,
             ecc_no_compress=self.ecc_no_compress,
         )
+        optimizer.Tile_color_optimizer.color_model.load(self.checkpoint)
+        optimizer.Tile_color_optimizer.color_model.to_eval()
         output = optimizer.color_conversion((padded * 255).astype(np.float32)) / 255.0
         return torch.from_numpy(output[:h, :w]).to(image.device, dtype=image.dtype)
 
@@ -173,7 +176,7 @@ def make_inference(args, device):
     if args.baseline == "ml-pea":
         return MLPEA(args.checkpoint, args.method, args.channels, device)
     if args.baseline == "hvs-vr-encoding":
-        return HVS(device, args.fov, args.max_ecc, args.tile_size, args.ecc_no_compress, args.abc_scaler)
+        return HVS(args.checkpoint, device, args.fov, args.max_ecc, args.tile_size, args.ecc_no_compress, args.abc_scaler)
     return VRPowerSaver(args.checkpoint, args.fov, args.transition_width)
 
 
