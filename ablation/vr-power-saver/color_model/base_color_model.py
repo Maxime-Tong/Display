@@ -28,7 +28,7 @@ class BaseColorModel(Module):
 
     def initialize(self):
         super(BaseColorModel, self).initialize()
-        torch.manual_seed(self.opt.rng_seed)
+        # torch.manual_seed(self.opt.rng_seed)
         self.model = Network(
             self.opt.layer_widths, self.opt.layer_centres, rbf.gaussian,
             self.opt.max_lm_contrast, self.opt.max_s_contrast, self.opt.max_eccentricity)
@@ -59,7 +59,7 @@ class BaseColorModel(Module):
         if type(x) is np.ndarray:
             x = torch.tensor(x, dtype=torch.float32)
         return self.model.forward(x)
-    
+
     def compute_ellipses(self, img, ecc_map):
         # Convert Image to iDKL
         RGB2iDKL = LMS2iDKL @ XYZ2LMS @ RGB2XYZ

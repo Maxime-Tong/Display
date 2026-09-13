@@ -5,8 +5,8 @@
   "steps": 1000,
   "lr": 0.0005,
   "device": "cuda",
-  "hidden_dim": 32,
-  "depth": 2,
+  "hidden_dim": 256,
+  "depth": 4,
   "lut_resolution": 16,
   "log_interval": 10,
   "seed": 0,
@@ -17,10 +17,10 @@
       0.24373232,
       0.5265638
     ],
-    "target_alpha": 0.87,
-    "lambda_power": 50.0,
+    "target_alpha": 0.83,
+    "lambda_power": 0.0,
     "lambda_metam": 0.5,
-    "lambda_weber": 0.2,
+    "lambda_weber": 50,
     "weber_epsilon": 1.0,
     "lambda_ssim": 0.5
   }

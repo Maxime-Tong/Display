@@ -1,0 +1,1016 @@
+{
+  "config": {
+    "mode": "cluster",
+    "representation": "lut",
+    "block_size": 4,
+    "lut_resolution": null
+  },
+  "images": [
+    {
+      "filename": "div2k_hr/0001.png",
+      "saving": 0.11622321605682373,
+      "psnr": 34.4395939731449,
+      "ssim": 0.9965428709983826,
+      "metam": 8.41047858557431e-06,
+      "cluster_id": 2,
+      "match_distance": 0.26963788729119637,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0002.png",
+      "saving": 0.12296652793884277,
+      "psnr": 33.968767208502946,
+      "ssim": 0.9966623187065125,
+      "metam": 7.577104042866267e-06,
+      "cluster_id": 2,
+      "match_distance": 0.32909596407516023,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0003.png",
+      "saving": 0.18735313415527344,
+      "psnr": 25.050319809307577,
+      "ssim": 0.9910624027252197,
+      "metam": 2.0721676264656708e-05,
+      "cluster_id": 7,
+      "match_distance": 1.2371765704935749,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0004.png",
+      "saving": 0.179848313331604,
+      "psnr": 25.20256577969372,
+      "ssim": 0.9925866723060608,
+      "metam": 2.0211793525959365e-05,
+      "cluster_id": 7,
+      "match_distance": 1.4685628273185627,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0005.png",
+      "saving": 0.1881909966468811,
+      "psnr": 24.646625095021335,
+      "ssim": 0.9905476570129395,
+      "metam": 2.0618939743144438e-05,
+      "cluster_id": 0,
+      "match_distance": 1.6998199306389423,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0006.png",
+      "saving": 0.15020883083343506,
+      "psnr": 30.02255801753637,
+      "ssim": 0.9951650500297546,
+      "metam": 1.4692892364109866e-05,
+      "cluster_id": 3,
+      "match_distance": 0.5110922844949565,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0007.png",
+      "saving": 0.15604108572006226,
+      "psnr": 30.11474086217115,
+      "ssim": 0.9932768940925598,
+      "metam": 1.3793712241749745e-05,
+      "cluster_id": 5,
+      "match_distance": 0.6116451567895063,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0008.png",
+      "saving": 0.19532203674316406,
+      "psnr": 25.341769201965903,
+      "ssim": 0.9909923076629639,
+      "metam": 2.6622594305081293e-05,
+      "cluster_id": 7,
+      "match_distance": 1.5235227956429511,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0009.png",
+      "saving": 0.11885249614715576,
+      "psnr": 29.050008096520116,
+      "ssim": 0.9948475956916809,
+      "metam": 1.328055532212602e-05,
+      "cluster_id": -1,
+      "match_distance": 2.226138802613795,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0010.png",
+      "saving": 0.17677593231201172,
+      "psnr": 27.77921293632148,
+      "ssim": 0.9924759864807129,
+      "metam": 1.5960536984493956e-05,
+      "cluster_id": 1,
+      "match_distance": 0.4574330622196193,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0011.png",
+      "saving": 0.17413777112960815,
+      "psnr": 27.821258401231105,
+      "ssim": 0.9919123649597168,
+      "metam": 1.6396299542975612e-05,
+      "cluster_id": 1,
+      "match_distance": 0.580858855186133,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0012.png",
+      "saving": 0.1474897861480713,
+      "psnr": 29.94796934835406,
+      "ssim": 0.9943862557411194,
+      "metam": 1.155691370513523e-05,
+      "cluster_id": 5,
+      "match_distance": 0.8532465181852603,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0013.png",
+      "saving": 0.1310027837753296,
+      "psnr": 33.638613311012804,
+      "ssim": 0.9942293167114258,
+      "metam": 6.488202416221611e-06,
+      "cluster_id": -1,
+      "match_distance": 1.840180302458352,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0014.png",
+      "saving": 0.17666709423065186,
+      "psnr": 27.020055989917104,
+      "ssim": 0.9922403693199158,
+      "metam": 1.5549550880677998e-05,
+      "cluster_id": 1,
+      "match_distance": 0.4617137314063586,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0015.png",
+      "saving": 0.16057300567626953,
+      "psnr": 28.945160980424824,
+      "ssim": 0.994495689868927,
+      "metam": 1.6392414181609638e-05,
+      "cluster_id": 5,
+      "match_distance": 0.5673248262099558,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0016.png",
+      "saving": 0.19522559642791748,
+      "psnr": 25.169139090559533,
+      "ssim": 0.9906404614448547,
+      "metam": 1.708609124762006e-05,
+      "cluster_id": 7,
+      "match_distance": 0.9979532371255728,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0017.png",
+      "saving": 0.17806142568588257,
+      "psnr": 26.13478607224269,
+      "ssim": 0.9901831150054932,
+      "metam": 1.8026286852546036e-05,
+      "cluster_id": 7,
+      "match_distance": 1.2727867705129756,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0018.png",
+      "saving": 0.17259567975997925,
+      "psnr": 27.889066402091835,
+      "ssim": 0.9917333126068115,
+      "metam": 1.8298869690624997e-05,
+      "cluster_id": 4,
+      "match_distance": 0.5558079787579692,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0019.png",
+      "saving": 0.15880250930786133,
+      "psnr": 29.83572959601353,
+      "ssim": 0.9936482906341553,
+      "metam": 1.2837826943723485e-05,
+      "cluster_id": 3,
+      "match_distance": 0.39293575757505916,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0020.png",
+      "saving": 0.10752636194229126,
+      "psnr": 34.53860267093883,
+      "ssim": 0.9972312450408936,
+      "metam": 7.084471235430101e-06,
+      "cluster_id": 2,
+      "match_distance": 0.931036262145786,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0021.png",
+      "saving": 0.1773276925086975,
+      "psnr": 26.924183021965487,
+      "ssim": 0.9926039576530457,
+      "metam": 2.137022056558635e-05,
+      "cluster_id": 1,
+      "match_distance": 0.782543130110207,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0022.png",
+      "saving": 0.17801696062088013,
+      "psnr": 27.041366654620155,
+      "ssim": 0.9917420744895935,
+      "metam": 1.716997030598577e-05,
+      "cluster_id": 1,
+      "match_distance": 0.9059788162493712,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0023.png",
+      "saving": 0.15335196256637573,
+      "psnr": 29.50455978598528,
+      "ssim": 0.9956021308898926,
+      "metam": 8.82231233845232e-06,
+      "cluster_id": 3,
+      "match_distance": 1.1913164715845697,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0024.png",
+      "saving": 0.16636866331100464,
+      "psnr": 29.57733340602931,
+      "ssim": 0.9913444519042969,
+      "metam": 8.949475159170106e-06,
+      "cluster_id": 4,
+      "match_distance": 1.6915831133852608,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0025.png",
+      "saving": 0.11440426111221313,
+      "psnr": 33.4066469529676,
+      "ssim": 0.9968696236610413,
+      "metam": 9.014707757160068e-06,
+      "cluster_id": 2,
+      "match_distance": 0.8731897758072211,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0026.png",
+      "saving": 0.17569470405578613,
+      "psnr": 27.473019572799096,
+      "ssim": 0.9918153882026672,
+      "metam": 2.029732240771409e-05,
+      "cluster_id": 4,
+      "match_distance": 1.3405499577536206,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0027.png",
+      "saving": 0.15540099143981934,
+      "psnr": 29.73952724930296,
+      "ssim": 0.9948955178260803,
+      "metam": 1.2942663488502149e-05,
+      "cluster_id": 3,
+      "match_distance": 0.8203227901660187,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0028.png",
+      "saving": 0.19025349617004395,
+      "psnr": 25.271369259916547,
+      "ssim": 0.9918532371520996,
+      "metam": 2.061075792880729e-05,
+      "cluster_id": 7,
+      "match_distance": 0.6620810434136742,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0029.png",
+      "saving": 0.15231233835220337,
+      "psnr": 30.775220969182673,
+      "ssim": 0.9929541945457458,
+      "metam": 1.4144977285468485e-05,
+      "cluster_id": 5,
+      "match_distance": 1.2076016123386366,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0030.png",
+      "saving": 0.1710764765739441,
+      "psnr": 26.703403235946496,
+      "ssim": 0.9918265342712402,
+      "metam": 1.9522169168340042e-05,
+      "cluster_id": 4,
+      "match_distance": 1.4908892386222408,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0031.png",
+      "saving": 0.1749444603919983,
+      "psnr": 27.141285219251348,
+      "ssim": 0.9911472797393799,
+      "metam": 2.2448610252467915e-05,
+      "cluster_id": 4,
+      "match_distance": 0.5914322917559882,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0032.png",
+      "saving": 0.19043868780136108,
+      "psnr": 25.50107605446137,
+      "ssim": 0.9914350509643555,
+      "metam": 1.6516418327228166e-05,
+      "cluster_id": 7,
+      "match_distance": 0.8449737418727241,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0033.png",
+      "saving": 0.17614424228668213,
+      "psnr": 27.376034253439173,
+      "ssim": 0.991381824016571,
+      "metam": 1.440498908777954e-05,
+      "cluster_id": 4,
+      "match_distance": 1.4216270722569921,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0034.png",
+      "saving": 0.17449921369552612,
+      "psnr": 27.432084873127117,
+      "ssim": 0.9909406304359436,
+      "metam": 1.8114847989636473e-05,
+      "cluster_id": 4,
+      "match_distance": 0.710902578484275,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0035.png",
+      "saving": 0.17090952396392822,
+      "psnr": 27.455979011066816,
+      "ssim": 0.99275141954422,
+      "metam": 1.555243943585083e-05,
+      "cluster_id": 1,
+      "match_distance": 0.9111769034779881,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0036.png",
+      "saving": 0.10716378688812256,
+      "psnr": 28.24123101534409,
+      "ssim": 0.9977558255195618,
+      "metam": 1.2209347914904356e-05,
+      "cluster_id": -1,
+      "match_distance": 4.01983725195213,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0037.png",
+      "saving": 0.12302476167678833,
+      "psnr": 35.08999703494991,
+      "ssim": 0.9972904324531555,
+      "metam": 9.326379768026527e-06,
+      "cluster_id": 2,
+      "match_distance": 0.8686223687899546,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0038.png",
+      "saving": 0.14806771278381348,
+      "psnr": 30.255601962164988,
+      "ssim": 0.9942055344581604,
+      "metam": 1.888392580440268e-05,
+      "cluster_id": 5,
+      "match_distance": 1.301553980805257,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0039.png",
+      "saving": 0.1630624532699585,
+      "psnr": 29.113539312206065,
+      "ssim": 0.9943742752075195,
+      "metam": 1.2620348570635542e-05,
+      "cluster_id": 5,
+      "match_distance": 0.7807956395187928,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0040.png",
+      "saving": 0.1614704728126526,
+      "psnr": 28.487596227071784,
+      "ssim": 0.9956690669059753,
+      "metam": 1.2875560969405342e-05,
+      "cluster_id": 3,
+      "match_distance": 1.1135285879594168,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0041.png",
+      "saving": 0.1832178235054016,
+      "psnr": 25.664794447936316,
+      "ssim": 0.9910395741462708,
+      "metam": 2.0113648133701645e-05,
+      "cluster_id": 7,
+      "match_distance": 0.8611564871485999,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0042.png",
+      "saving": 0.11238634586334229,
+      "psnr": 33.601076090228204,
+      "ssim": 0.9969461560249329,
+      "metam": 7.722629561612848e-06,
+      "cluster_id": 2,
+      "match_distance": 1.3301044427396114,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0043.png",
+      "saving": 0.10165917873382568,
+      "psnr": 29.92250529038701,
+      "ssim": 0.9952351450920105,
+      "metam": 1.0248275430058129e-05,
+      "cluster_id": -1,
+      "match_distance": 2.014471325930773,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0044.png",
+      "saving": 0.17784762382507324,
+      "psnr": 28.00041935344281,
+      "ssim": 0.9912310242652893,
+      "metam": 1.667365177127067e-05,
+      "cluster_id": 4,
+      "match_distance": 0.9734485458036961,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0045.png",
+      "saving": 0.19050085544586182,
+      "psnr": 23.547039563360592,
+      "ssim": 0.988575279712677,
+      "metam": 2.4231259885709733e-05,
+      "cluster_id": 6,
+      "match_distance": 1.1541005234349635,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0046.png",
+      "saving": 0.1773194670677185,
+      "psnr": 27.503779980897537,
+      "ssim": 0.9926457405090332,
+      "metam": 1.52771026478149e-05,
+      "cluster_id": 1,
+      "match_distance": 0.5324264245041591,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0047.png",
+      "saving": 0.18702423572540283,
+      "psnr": 25.404324979209434,
+      "ssim": 0.9919724464416504,
+      "metam": 1.89161000889726e-05,
+      "cluster_id": 7,
+      "match_distance": 0.253950421408788,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0048.png",
+      "saving": 0.14141112565994263,
+      "psnr": 31.498527244669603,
+      "ssim": 0.9975907802581787,
+      "metam": 1.449432602385059e-05,
+      "cluster_id": 2,
+      "match_distance": 0.8624838804753484,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0049.png",
+      "saving": 0.19466739892959595,
+      "psnr": 26.156795881742102,
+      "ssim": 0.9931029677391052,
+      "metam": 2.0596737158484757e-05,
+      "cluster_id": 1,
+      "match_distance": 0.905864611516907,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0050.png",
+      "saving": 0.17957180738449097,
+      "psnr": 27.697167458752475,
+      "ssim": 0.9919199347496033,
+      "metam": 1.1540343621163629e-05,
+      "cluster_id": 4,
+      "match_distance": 0.8645820410487037,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0051.png",
+      "saving": 0.1620970368385315,
+      "psnr": 29.348768883546853,
+      "ssim": 0.9943627715110779,
+      "metam": 1.4399163774214685e-05,
+      "cluster_id": 5,
+      "match_distance": 0.3325945188537149,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0052.png",
+      "saving": 0.15941286087036133,
+      "psnr": 28.834600695446344,
+      "ssim": 0.9936127066612244,
+      "metam": 1.454206449125195e-05,
+      "cluster_id": 3,
+      "match_distance": 1.0247561436915948,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0053.png",
+      "saving": 0.17401480674743652,
+      "psnr": 26.972601740212486,
+      "ssim": 0.9927778840065002,
+      "metam": 1.6528625565115362e-05,
+      "cluster_id": 1,
+      "match_distance": 1.2783336588272356,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0054.png",
+      "saving": 0.15147727727890015,
+      "psnr": 29.843170527525317,
+      "ssim": 0.9940373301506042,
+      "metam": 1.5872503354330547e-05,
+      "cluster_id": 3,
+      "match_distance": 1.4532298276173428,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0055.png",
+      "saving": 0.11132252216339111,
+      "psnr": 36.970827556574086,
+      "ssim": 0.9971138834953308,
+      "metam": 4.119923232792644e-06,
+      "cluster_id": 2,
+      "match_distance": 0.7866395050340184,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0056.png",
+      "saving": 0.16980838775634766,
+      "psnr": 27.836287815709596,
+      "ssim": 0.9946069717407227,
+      "metam": 1.5259873180184513e-05,
+      "cluster_id": 3,
+      "match_distance": 1.0941289159180914,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0057.png",
+      "saving": 0.20239108800888062,
+      "psnr": 23.955828283976498,
+      "ssim": 0.9926102757453918,
+      "metam": 2.038438651652541e-05,
+      "cluster_id": 0,
+      "match_distance": 1.1661243508317962,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0058.png",
+      "saving": 0.17511433362960815,
+      "psnr": 28.11440252536525,
+      "ssim": 0.992353618144989,
+      "metam": 1.7946675143321045e-05,
+      "cluster_id": 4,
+      "match_distance": 0.7313144140606916,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0059.png",
+      "saving": 0.14771056175231934,
+      "psnr": 30.09100386538888,
+      "ssim": 0.9945630431175232,
+      "metam": 1.108798915083753e-05,
+      "cluster_id": 5,
+      "match_distance": 1.258718379841929,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0060.png",
+      "saving": 0.19441717863082886,
+      "psnr": 25.194372985680673,
+      "ssim": 0.9910635352134705,
+      "metam": 2.064977707050275e-05,
+      "cluster_id": 7,
+      "match_distance": 0.44480552291452474,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0061.png",
+      "saving": 0.12330859899520874,
+      "psnr": 36.63492457604696,
+      "ssim": 0.996468722820282,
+      "metam": 7.178837222454604e-06,
+      "cluster_id": 2,
+      "match_distance": 0.9856766891871427,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0062.png",
+      "saving": 0.1586032509803772,
+      "psnr": 30.72866726176798,
+      "ssim": 0.9941296577453613,
+      "metam": 1.170451650978066e-05,
+      "cluster_id": 5,
+      "match_distance": 1.3324652443970462,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0063.png",
+      "saving": 0.1818518042564392,
+      "psnr": 28.075175065755438,
+      "ssim": 0.9902828335762024,
+      "metam": 1.941573282238096e-05,
+      "cluster_id": 4,
+      "match_distance": 0.3483205433609443,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0064.png",
+      "saving": 0.14587390422821045,
+      "psnr": 32.28593034167426,
+      "ssim": 0.9949306845664978,
+      "metam": 1.1392859960324131e-05,
+      "cluster_id": 5,
+      "match_distance": 1.5409597192701858,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0065.png",
+      "saving": 0.1208200454711914,
+      "psnr": 36.54933070077908,
+      "ssim": 0.9959489703178406,
+      "metam": 6.08692562309443e-06,
+      "cluster_id": 2,
+      "match_distance": 0.9969333805537062,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0066.png",
+      "saving": 0.15467101335525513,
+      "psnr": 29.589010932050233,
+      "ssim": 0.9940271377563477,
+      "metam": 1.3038958968536463e-05,
+      "cluster_id": 5,
+      "match_distance": 0.7966514762680242,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0067.png",
+      "saving": 0.17896920442581177,
+      "psnr": 28.655362172914096,
+      "ssim": 0.9939423203468323,
+      "metam": 1.1400028597563505e-05,
+      "cluster_id": 3,
+      "match_distance": 1.4056258117784695,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0068.png",
+      "saving": 0.18845665454864502,
+      "psnr": 25.08582917130866,
+      "ssim": 0.9921204447746277,
+      "metam": 2.1959618607070297e-05,
+      "cluster_id": 0,
+      "match_distance": 1.3732907424443221,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0069.png",
+      "saving": 0.17415165901184082,
+      "psnr": 26.98376395731215,
+      "ssim": 0.9915428161621094,
+      "metam": 1.801477264962159e-05,
+      "cluster_id": 4,
+      "match_distance": 1.308132157879496,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0070.png",
+      "saving": 0.1994902491569519,
+      "psnr": 25.58294072660376,
+      "ssim": 0.9894189238548279,
+      "metam": 1.8581153199193068e-05,
+      "cluster_id": 7,
+      "match_distance": 1.15657069654629,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0071.png",
+      "saving": 0.17207938432693481,
+      "psnr": 27.427682285354447,
+      "ssim": 0.9921582341194153,
+      "metam": 1.4633236787631176e-05,
+      "cluster_id": 1,
+      "match_distance": 0.7825383425901388,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0072.png",
+      "saving": 0.15832549333572388,
+      "psnr": 29.12528847044241,
+      "ssim": 0.9945648312568665,
+      "metam": 1.575230635353364e-05,
+      "cluster_id": 5,
+      "match_distance": 0.712749737569236,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0073.png",
+      "saving": 0.18797355890274048,
+      "psnr": 24.452875369033666,
+      "ssim": 0.9907005429267883,
+      "metam": 2.53057514782995e-05,
+      "cluster_id": 0,
+      "match_distance": 1.2154106583789348,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0074.png",
+      "saving": 0.19982576370239258,
+      "psnr": 23.65587980967657,
+      "ssim": 0.9885388016700745,
+      "metam": 2.12408704101108e-05,
+      "cluster_id": 6,
+      "match_distance": 1.0001007301941762,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0075.png",
+      "saving": 0.11397814750671387,
+      "psnr": 29.354854363452496,
+      "ssim": 0.99417644739151,
+      "metam": 1.2789856555173174e-05,
+      "cluster_id": -1,
+      "match_distance": 1.9556246841394922,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0076.png",
+      "saving": 0.14455384016036987,
+      "psnr": 32.75203383594568,
+      "ssim": 0.9940707087516785,
+      "metam": 1.37432625706424e-05,
+      "cluster_id": 5,
+      "match_distance": 1.5329350342306534,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0077.png",
+      "saving": 0.16019856929779053,
+      "psnr": 29.210848820656835,
+      "ssim": 0.9954156875610352,
+      "metam": 1.1604660357988905e-05,
+      "cluster_id": 3,
+      "match_distance": 0.18085244102638606,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0078.png",
+      "saving": 0.18190014362335205,
+      "psnr": 27.260031744080266,
+      "ssim": 0.9908222556114197,
+      "metam": 1.8384262148174457e-05,
+      "cluster_id": 4,
+      "match_distance": 1.1923543502244611,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0079.png",
+      "saving": 0.181421160697937,
+      "psnr": 26.791565012601662,
+      "ssim": 0.9919598698616028,
+      "metam": 1.872391476354096e-05,
+      "cluster_id": 4,
+      "match_distance": 0.49476676134070713,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0080.png",
+      "saving": 0.2052319049835205,
+      "psnr": 23.542505911882074,
+      "ssim": 0.991966962814331,
+      "metam": 2.458677590766456e-05,
+      "cluster_id": 0,
+      "match_distance": 1.3394279972063363,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0081.png",
+      "saving": 0.1124839186668396,
+      "psnr": 34.393552844368706,
+      "ssim": 0.9971941113471985,
+      "metam": 7.394298791041365e-06,
+      "cluster_id": 2,
+      "match_distance": 0.919920960348208,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0082.png",
+      "saving": 0.18082791566848755,
+      "psnr": 27.136510825612383,
+      "ssim": 0.9912675023078918,
+      "metam": 1.8390028344583698e-05,
+      "cluster_id": 4,
+      "match_distance": 0.3466669327548197,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0083.png",
+      "saving": 0.15952956676483154,
+      "psnr": 29.745710188469868,
+      "ssim": 0.9939725399017334,
+      "metam": 1.3506059076462407e-05,
+      "cluster_id": 5,
+      "match_distance": 0.7882003184544637,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0084.png",
+      "saving": 0.10347998142242432,
+      "psnr": 28.617050094860303,
+      "ssim": 0.9963685870170593,
+      "metam": 1.2870646969531663e-05,
+      "cluster_id": -1,
+      "match_distance": 2.749832351351087,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0085.png",
+      "saving": 0.18584215641021729,
+      "psnr": 25.86445566515367,
+      "ssim": 0.9922280311584473,
+      "metam": 2.01403527171351e-05,
+      "cluster_id": 7,
+      "match_distance": 0.6727178456545473,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0086.png",
+      "saving": 0.09981286525726318,
+      "psnr": 28.888647628370205,
+      "ssim": 0.9955640435218811,
+      "metam": 1.2581711416714825e-05,
+      "cluster_id": -1,
+      "match_distance": 2.238463595250683,
+      "fallback": true
+    },
+    {
+      "filename": "div2k_hr/0087.png",
+      "saving": 0.17360979318618774,
+      "psnr": 27.56045287725898,
+      "ssim": 0.9929534792900085,
+      "metam": 1.579187846800778e-05,
+      "cluster_id": 1,
+      "match_distance": 0.6614690934746077,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0088.png",
+      "saving": 0.15110933780670166,
+      "psnr": 30.712436744173193,
+      "ssim": 0.9961946606636047,
+      "metam": 1.3450049664243124e-05,
+      "cluster_id": 5,
+      "match_distance": 1.0156463993622933,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0089.png",
+      "saving": 0.17981016635894775,
+      "psnr": 26.117357269586023,
+      "ssim": 0.9909465909004211,
+      "metam": 2.1329038645490073e-05,
+      "cluster_id": 7,
+      "match_distance": 1.216806761565089,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0090.png",
+      "saving": 0.17052137851715088,
+      "psnr": 27.35901342346308,
+      "ssim": 0.9921002388000488,
+      "metam": 1.96732235053787e-05,
+      "cluster_id": 4,
+      "match_distance": 0.5031870903933701,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0091.png",
+      "saving": 0.19088786840438843,
+      "psnr": 25.603068327990645,
+      "ssim": 0.991023600101471,
+      "metam": 1.8917997294920497e-05,
+      "cluster_id": 7,
+      "match_distance": 0.5491346457188112,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0092.png",
+      "saving": 0.1864745020866394,
+      "psnr": 26.105984111350665,
+      "ssim": 0.994065523147583,
+      "metam": 1.908513695525471e-05,
+      "cluster_id": 1,
+      "match_distance": 0.8939772307453778,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0093.png",
+      "saving": 0.17719900608062744,
+      "psnr": 27.60134198870189,
+      "ssim": 0.9899759888648987,
+      "metam": 2.0617751943063922e-05,
+      "cluster_id": 4,
+      "match_distance": 0.8502560605794571,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0094.png",
+      "saving": 0.17286092042922974,
+      "psnr": 28.131856255452035,
+      "ssim": 0.9908648133277893,
+      "metam": 1.964895272976719e-05,
+      "cluster_id": 4,
+      "match_distance": 0.7720113209864471,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0095.png",
+      "saving": 0.17041778564453125,
+      "psnr": 27.104103438832375,
+      "ssim": 0.9918943047523499,
+      "metam": 1.5873003576416522e-05,
+      "cluster_id": 4,
+      "match_distance": 1.1366290420422889,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0096.png",
+      "saving": 0.15200048685073853,
+      "psnr": 30.018122945586555,
+      "ssim": 0.9941596984863281,
+      "metam": 1.2041421541653108e-05,
+      "cluster_id": 5,
+      "match_distance": 0.6093658453958053,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0097.png",
+      "saving": 0.14426320791244507,
+      "psnr": 31.365257971691754,
+      "ssim": 0.9944641590118408,
+      "metam": 1.5307601643144153e-05,
+      "cluster_id": 5,
+      "match_distance": 0.898656762694921,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0098.png",
+      "saving": 0.14866119623184204,
+      "psnr": 29.90266014161229,
+      "ssim": 0.9943122863769531,
+      "metam": 1.1652949069684837e-05,
+      "cluster_id": 5,
+      "match_distance": 0.6977939236483316,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0099.png",
+      "saving": 0.17532992362976074,
+      "psnr": 27.29028142409828,
+      "ssim": 0.9918504357337952,
+      "metam": 1.5032628652988933e-05,
+      "cluster_id": 4,
+      "match_distance": 0.5084386181247633,
+      "fallback": false
+    },
+    {
+      "filename": "div2k_hr/0100.png",
+      "saving": 0.16720396280288696,
+      "psnr": 27.932282237750748,
+      "ssim": 0.991854190826416,
+      "metam": 1.1769749107770622e-05,
+      "cluster_id": 4,
+      "match_distance": 1.3617347518553116,
+      "fallback": false
+    }
+  ],
+  "summary": {
+    "saving": 0.16245179653167724,
+    "psnr": 28.564205400185447,
+    "ssim": 0.993211213350296,
+    "metam": 1.5486224920095993e-05
+  }
+}

@@ -24,11 +24,9 @@ def power_loss(original, optimized, target_alpha=0.8):
     return (dynamic_power(optimized) - target_alpha * dynamic_power(original)) ** 2
 
 
-def weber_loss(original, optimized, weights=(0.22970384, 0.24373232, 0.5265638), epsilon=0.01):
-    weights = torch.as_tensor(weights, dtype=original.dtype, device=original.device)
-    reference = (original * weights).sum(dim=-1)
-    value = (optimized * weights).sum(dim=-1)
-    return ((value - reference).abs() / (reference + epsilon)).mean()
+def weber_loss(original, optimized, target_alpha=0.8, epsilon=1e-6):
+    reference = target_alpha * dynamic_power(original)
+    return (dynamic_power(optimized) - reference) ** 2 / (reference + epsilon).mean()
 
 
 def _ssim_value(x, y, window_size=11, sigma=1.5):
@@ -68,7 +66,7 @@ class CombinedLoss(torch.nn.Module):
         parts = {
             "power": power_loss(original, optimized, cfg.target_alpha),
             "metam": self.metam(metam_optimized, metam_original),
-            "weber": weber_loss(original, optimized, cfg.power_weights, cfg.weber_epsilon),
+            "weber": weber_loss(original, optimized, cfg.target_alpha, cfg.weber_epsilon),
             "ssim": ssim_loss(original, optimized),
         }
         parts["total"] = (cfg.lambda_power * parts["power"] + cfg.lambda_metam * parts["metam"]

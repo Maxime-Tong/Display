@@ -253,8 +253,9 @@ class MetamericLoss:
         for a, b in zip(statsmap_a, statsmap_b):
             if self.use_radial_weight:
                 radii = make_radial_map([a.size(-2), a.size(-1)], gaze).to(a.device)
-                weights = (torch.sigmoid(50 * (0.10 - radii)) ** 4) * 0.11
-                weights = torch.clamp(weights, min=0.001)
+                # weights = (torch.sigmoid(50 * (0.10 - radii)) ** 4) * 0.11
+                # weights = torch.clamp(weights, min=0.001)
+                weights = 1.1 - (radii * radii * radii * radii)
                 if self.loss_type == "MSE":
                     loss += torch.nn.MSELoss()(weights*a, weights*b)
                 elif self.loss_type == "L1":
