@@ -4,6 +4,7 @@ from pathlib import Path
 
 import torch
 from torch import nn
+from torch.nn import functional as F
 
 from .color import rgb_to_dkl, srgb_to_linear
 
@@ -50,16 +51,9 @@ def load_model(path, device="cpu"):
 
 def apply_lut(lut, image):
     """Trilinear LUT interpolation for HWC sRGB tensors."""
-    size = lut.shape[0]
-    position = image.clamp(0, 1) * (size - 1)
-    low = position.floor().long().clamp(0, size - 1)
-    high = (low + 1).clamp(0, size - 1)
-    fraction = position - low
-    out = torch.zeros_like(image)
-    for r in (0, 1):
-        for g in (0, 1):
-            for b in (0, 1):
-                index = torch.stack([high[..., 0] if r else low[..., 0], high[..., 1] if g else low[..., 1], high[..., 2] if b else low[..., 2]], -1)
-                weight = ((fraction[..., 0] if r else 1 - fraction[..., 0]) * (fraction[..., 1] if g else 1 - fraction[..., 1]) * (fraction[..., 2] if b else 1 - fraction[..., 2]))
-                out += lut[index[..., 0], index[..., 1], index[..., 2]] * weight[..., None]
-    return out.clamp(0, 1)
+    # grid_sample coordinates are (W, H, D), hence BGR for an RGB-indexed LUT.
+    coordinates = (image.clamp(0, 1).flip(-1) * 2 - 1)[None, None]
+    volume = lut.permute(3, 0, 1, 2)[None]
+    sampled = F.grid_sample(volume, coordinates, mode="bilinear",
+                            padding_mode="border", align_corners=True)
+    return sampled[0, :, 0].permute(1, 2, 0).clamp(0, 1)

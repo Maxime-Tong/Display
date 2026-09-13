@@ -1,0 +1,27 @@
+{
+  "_comment": "Large dataset LUT training: 1000 images per scene across 10 scenes.",
+  "image_size": 256,
+  "steps": 4000,
+  "resolution": 33,
+  "samples": [800, 200, 0],
+  "val_limit": 200,
+  "test_limit": 0,
+  "seed": 17,
+  "lr": 0.03,
+  "saving": 0.17,
+  "device": "cuda",
+  "batch_size": 1,
+  "hidden_dim": 1,
+  "depth": 1,
+  "log_interval": 50,
+  "clusters": 0,
+  "loss": {
+    "target_alpha": 0.83,
+    "lambda_power": 0.0,
+    "lambda_metam": 1.0,
+    "lambda_weber": 0.0,
+    "lambda_ssim": 0.0,
+    "weber_epsilon": 1.0,
+    "power_weights": [0.22970384, 0.24373232, 0.5265638]
+  }
+}

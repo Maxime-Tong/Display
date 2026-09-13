@@ -6,6 +6,12 @@ and maintenance.
 
 ## Scope
 
+The original rebuild contract below describes the legacy training route.
+The subsequently requested 17% optimization is implemented separately in
+`src/optimize_lut.py`: direct LUT training with per-node weighted linear-power
+budgets and the evaluation foveated MetaM objective. It preserves the legacy
+functions and exported LUT format. See README for usage and measurement limits.
+
 Keep multiplicative per-pixel color adaptation, an ML-PEA-like global power
 target loss, MetaM, Weber, SSIM, original DKL scene clustering, base training,
 optional per-cluster fine-tuning, and LUT export. Do not add new clustering

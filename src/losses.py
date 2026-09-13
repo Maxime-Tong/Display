@@ -5,8 +5,16 @@ from dataclasses import dataclass
 import torch
 import torch.nn.functional as F
 
-from .perception import MetamericLossUniform
+from .perception import MetamericLoss, MetamericLossUniform
 from .power import dynamic_power
+
+
+def evaluation_metam(device):
+    """Shared benchmark MetaM settings for evaluation and direct LUT training."""
+    return MetamericLoss(device=device, real_image_width=1.4,
+                         real_viewing_distance=0.7, equi=False, alpha=5.0,
+                         mode="quadratic", loss_type="L1", use_l2_foveal_loss=False,
+                         n_pyramid_levels=5, n_orientations=4, use_radial_weight=True)
 
 
 @dataclass(frozen=True)

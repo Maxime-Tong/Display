@@ -14,7 +14,7 @@ from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.model import apply_lut, load_model
-from src.perception import MetamericLoss
+from src.losses import evaluation_metam
 from src.power import power_saving
 from src.scenes import IMAGE_EXTENSIONS, load_scene_manifest, match_scene
 
@@ -65,7 +65,7 @@ def main():
     model = load_model(args.model, device) if args.model else None
     lut = torch.load(args.lut, map_location=device)["lut"].to(device) if args.lut else None
     manifest = load_scene_manifest(args.scene_manifest) if args.scene_manifest else None
-    metam = MetamericLoss(device=device, real_image_width=1.4, real_viewing_distance=0.7, equi=False, alpha=5.0, mode="quadratic", loss_type="L1", use_l2_foveal_loss=False, n_pyramid_levels=5, n_orientations=4, use_radial_weight=True)
+    metam = evaluation_metam(device)
     rows = []
     for current, path in enumerate(paths, 1):
         original = load_rgb(path).to(device)
@@ -92,7 +92,10 @@ def main():
             optimized = apply_lut(lut, original)
         optimized_np = optimized.detach().cpu().numpy()
         if args.save:
-            Image.fromarray((optimized_np * 255).round().clip(0, 255).astype(np.uint8)).save(output / path.name)
+            relative = path.relative_to(Path(args.data_dir))
+            destination = output / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            Image.fromarray((optimized_np * 255).round().clip(0, 255).astype(np.uint8)).save(destination)
         row = {"filename": path.name, **evaluate_image(original, optimized, metam, args.power_weights)}
         if cluster_id is not None:
             row.update(cluster_id=cluster_id, matched_cluster_id=matched_cluster_id, match_distance=match_distance, used_fallback=used_fallback)

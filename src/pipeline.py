@@ -39,7 +39,7 @@ def sample_images_per_scene(data_dir, samples_per_scene, seed=0):
 
 def validate_config(config):
     """Validate the project config and return its loss settings."""
-    allowed = {"_comment", "image_size", "batch_size", "steps", "lr", "device", "hidden_dim", "depth", "lut_resolution", "clusters", "log_interval", "seed", "pretrain_samples_per_scene", "loss"}
+    allowed = {"_comment", "image_size", "batch_size", "steps", "lr", "device", "hidden_dim", "depth", "lut_resolution", "clusters", "log_interval", "seed", "pretrain_samples_per_scene", "loss", "resolution", "samples", "val_limit", "test_limit", "saving"}
     unknown = set(config) - allowed
     if unknown:
         raise ValueError(f"unknown config items: {', '.join(sorted(unknown))}")
